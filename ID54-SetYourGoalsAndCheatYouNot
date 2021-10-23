@@ -1,0 +1,43 @@
+# ID54-SetYourGoalsAndCheatYouNot
+import pandas as pd
+import numpy as np
+
+data = pd.read_csv("Goals.csv", sep = ';', index_col=0)
+columns = data.columns #salavtaggio vettore con nomi colonne
+data.head() #verifico la che il dataset sia stato importato correttamente
+data.info() #controllo la tipologia delle variabili a disposizione, in modo da poterci lavorare coerentemente alla loro tipologia
+data.shape
+data.isna().sum() #controllo il numero di dati mancanti per ogni categoria
+data.describe() #descrizione del dataset: media, deviazione standard, minimo, massimo...
+data["Sesso"].value_counts() #conto il numero di dati per ogni sottogruppo per alcune variabili di interesse
+data["Laurea in"].value_counts()
+data["Anno"].value_counts()
+data.groupby("Laurea in").mean() #calcolo la media per ogni variabile, in relazione al corso di studi
+data.groupby("Età").mean() #calcolo la media per ogni variabile, in relazione all'età
+
+
+data_num= pd.read_csv("Goal_numerical_values.csv", sep = ';', header=0)
+columns_num = data_num.columns #salavtaggio vettore con nomi colonne
+data_num.head() #verifico la che il dataset sia stato importato correttamente
+data_num.info() #controllo la tipologia delle variabili a disposizione, in modo da poterci lavorare coerentemente alla loro tipologia
+data_num.shape
+data_num.isna().sum() #controllo il numero di dati mancanti per ogni categoria
+data_num.describe() #descrizione del dataset: media, deviazione standard, minimo, massimo...
+data_num.mean()
+data_num.hist() --> andamento da standardizzare
+data_num.boxplot() --> è necessario standardizzare
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler().fit(data_num) #standardization
+print(scaler)
+scaler.mean_
+scaler.scale_
+scaled_data = scaler.transform(data_num)
+scaled_df = pd.DataFrame(scaled_data) 
+scaled_df.columns = columns_num
+scaled_df.head()
+scaled_df.boxplot() 
+from sklearn.preprocessing import MinMaxScaler #standardization in -1;1
+mm_scaler =  MinMaxScaler(copy=False,feature_range=(-1, 1))
+mm_scaler.fit_transform(scaled_df)
+scaled_df.head()
+scaled_df.boxplot()
